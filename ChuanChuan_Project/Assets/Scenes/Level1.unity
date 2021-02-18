@@ -339,9 +339,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce6efdfe704e04bf6b89371fa878e950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunSprite: {fileID: 1893481955}
+  gunSprite: {fileID: 1893481953}
   canShoot: 0
-  speed: 6
+  isShooting: 0
+  forkSpeed: 300
   nextBubblePosition: {fileID: 459004700}
   currentBubble: {fileID: 0}
   nextBubble: {fileID: 0}
@@ -559,7 +560,8 @@ MonoBehaviour:
   leftLine: {fileID: 453455463422590966, guid: 2ce71e60a05e04955830365bdd843a8d, type: 3}
   rightLine: {fileID: 1022154507335420059, guid: 8ff0ff40d20064b308e2c90b22b03fe4,
     type: 3}
-  fallSpeed: {x: 0, y: -0.1}
+  fallSpeed: {x: 0, y: -1}
+  initialBubbles: 10
 --- !u!224 &1137127813
 RectTransform:
   m_ObjectHideFlags: 0
@@ -576,8 +578,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.5, y: -2.7}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 0.08, y: -0.13}
+  m_SizeDelta: {x: 53.800247, y: 61.215027}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1603597506
 GameObject:
@@ -685,7 +687,7 @@ Transform:
   m_GameObject: {fileID: 1893481953}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.2, y: -15.9, z: 0}
-  m_LocalScale: {x: 3.6662242, y: 4.3140144, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6

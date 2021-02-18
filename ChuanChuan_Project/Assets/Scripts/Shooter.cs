@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
-    public Transform gunSprite;
+    public GameObject gunSprite;
     public bool canShoot;
-    public float speed = 100f;
+    public bool isShooting;
+    public float forkSpeed;
 
     public Transform nextBubblePosition;
     public GameObject currentBubble;
@@ -13,8 +14,8 @@ public class Shooter : MonoBehaviour
 
     public Transform collectionPosition;
     public List<Bubble> collection;
+    public Vector2 collectionOffset;
     private Vector2 collectionNextPosition;
-    private Vector2 collectionOffset;
 
     private Vector2 staticVector = new Vector2(0,0);
 
@@ -26,28 +27,30 @@ public class Shooter : MonoBehaviour
 
     public void Initiate() {
         canShoot = true;
-        CreateNextBubble();
         collectionNextPosition = new Vector2(collectionPosition.position.x, collectionPosition.position.y);
-        collectionOffset = new Vector2(1, 0);
     }
 
     public void Update()
     {
-        updateShooterBearing();
+        if (!isShooting) {
+            updateShooterBearing();
+        }
     }
 
     private void updateShooterBearing() {
         lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         lookAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
-        gunSprite.rotation = Quaternion.Euler(0f, 0f, lookAngle - 90f);
+        gunSprite.transform.rotation = Quaternion.Euler(0f, 0f, lookAngle - 90f);
     }
 
     public void Shoot()
     {
+        isShooting = true;
         transform.rotation = Quaternion.Euler(0f, 0f, lookAngle - 90f);
-        currentBubble.transform.rotation = transform.rotation;
-        currentBubble.GetComponent<Rigidbody2D>().AddForce(currentBubble.transform.up * speed, ForceMode2D.Impulse);
-        currentBubble = null;
+        gunSprite.transform.rotation = transform.rotation;
+        Rigidbody2D rb2d = gunSprite.GetComponent<Rigidbody2D>();
+        rb2d.gravityScale = 0f;
+        rb2d.AddForce(gunSprite.transform.up * forkSpeed, ForceMode2D.Impulse);
     }
 
     [ContextMenu("SwapBubbles")]
@@ -98,8 +101,8 @@ public class Shooter : MonoBehaviour
     public void UpdateCollection(Bubble newBubble) {
         collection.Add(newBubble);
         newBubble.transform.position = collectionNextPosition;
-        newBubble.GetComponent<Rigidbody2D>().velocity = staticVector;
         collectionNextPosition += collectionOffset;
+        newBubble.GetComponent<Rigidbody2D>().velocity = staticVector;
 
         //TODO: animation maybe
 
@@ -117,7 +120,5 @@ public class Shooter : MonoBehaviour
                 lastItem3.Crash();
             }
         }
-
-
     }
 }

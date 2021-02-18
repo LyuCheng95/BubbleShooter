@@ -26,7 +26,9 @@ public class LevelManager : MonoBehaviour
     public GameObject leftLine;
     public GameObject rightLine;
     private bool lastLineIsLeft = true;
-    public Vector2 fallSpeed = new Vector2(0, -0.1f);
+    public Vector2 fallSpeed= new Vector3(0, -500f, 0);
+    
+    public int initialBubbles = 10;
 
     private void Start()
     {
@@ -86,7 +88,7 @@ public class LevelManager : MonoBehaviour
     {
         // random position
         List<Bubble> randomBubbles= new List<Bubble>();
-        GenerateRandomBubbles(randomBubbles, 10, bubbles);
+        GenerateRandomBubbles(randomBubbles, initialBubbles, bubbles);
 
         //initialize
 
@@ -101,8 +103,8 @@ public class LevelManager : MonoBehaviour
     private void GenerateRandomBubbles(List<Bubble> randomBubbles, int count, List<GameObject> bubbles) {
 
         for (int i = 0; i < count; i++) {
-            float x = Random.Range(-6.0f, 6.0f);
-            float y = Random.Range(10f, 20.0f);
+            float x = Random.Range(-23f, 23f);
+            float y = Random.Range(30f, 40.0f);
             Vector2 randomPosition = new Vector2(x, y);
             var bubble = Instantiate(bubbles[(int)(Random.Range(0, bubbles.Count * 1000000f) / 1000000f)]);
             bubble.transform.position = randomPosition;
