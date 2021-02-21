@@ -59,26 +59,30 @@ public class LevelManager : MonoBehaviour
             float x = Random.Range(-23f, 23f);
             float y = Random.Range(30f, 40.0f);
             Vector2 randomPosition = new Vector2(x, y);
+
+            //instantiate ONE bubble randomly from list
             var bubble =
                 Instantiate(bubbles[(
                 int
                 )(Random.Range(0, bubbles.Count * 1000000f) / 1000000f)]);
             bubble.transform.position = randomPosition;
+
+            //add velocity
             Rigidbody2D rb =
                 bubble.GetComponent(typeof (Rigidbody2D)) as Rigidbody2D;
             rb.velocity = fallSpeed;
         }
     }
 
-    public void AddScore(int s)
+    public void AddScore(int x)
     {
-        score = score + s;
+        score = score + x;
         scoreText.text = score.ToString();
     }
 
     public void GameOver()
     {
-        isGameOver = true; 
+        isGameOver = true;
         gameOverBoard.enabled = true;
         gameOverScoreText.text = score.ToString();
     }

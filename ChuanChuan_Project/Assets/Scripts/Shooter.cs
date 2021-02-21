@@ -13,10 +13,6 @@ public class Shooter : MonoBehaviour
 
     public Transform nextBubblePosition;
 
-    public GameObject currentBubble;
-
-    public GameObject nextBubble;
-
     public Transform collectionPosition;
 
     public List<Bubble> collection;
@@ -30,8 +26,6 @@ public class Shooter : MonoBehaviour
     private Vector2 lookDirection;
 
     private float lookAngle;
-
-    public bool isSwaping = false;
 
     public float time = 0.02f;
 
@@ -60,6 +54,8 @@ public class Shooter : MonoBehaviour
         }
     }
 
+    //must be attached to sprite
+    // must be rb & collision + same to the collided sprite
     private void OnCollisionEnter2D(Collision2D col)
     {
         Debug
@@ -93,6 +89,8 @@ public class Shooter : MonoBehaviour
         Rigidbody2D rb2d = gunSprite.GetComponent<Rigidbody2D>();
         rb2d.gravityScale = 0f;
         rb2d.AddForce(gunSprite.transform.up * forkSpeed, ForceMode2D.Impulse);
+
+        //to prevent rotation
         rb2d.angularVelocity = 0;
     }
 
@@ -103,10 +101,12 @@ public class Shooter : MonoBehaviour
         {
             LevelManager.instance.GameOver();
         }
+
+        //location of collected bubbles
         newBubble.transform.position = collectionNextPosition;
         collectionNextPosition += collectionOffset;
-        newBubble.GetComponent<Rigidbody2D>().velocity = staticVector;
 
+        //mesh three
         //TODO: animation maybe
         if (collection.Count >= 3)
         {
@@ -121,7 +121,11 @@ public class Shooter : MonoBehaviour
                 collection.Remove (lastItem);
                 collection.Remove (lastItem2);
                 collection.Remove (lastItem3);
+
+                //reposition of collected bubbles after mesh three
                 collectionNextPosition -= collectionOffset * 3;
+
+                //destrory lastitem is not working jwj??
                 lastItem.Crash();
                 lastItem2.Crash();
                 lastItem3.Crash();

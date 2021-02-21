@@ -35,10 +35,9 @@ public class GameManager : MonoBehaviour
             if (
                 shootScript.canShoot &&
                 Input.GetMouseButtonUp(0) &&
-                (
+                //only can shoot upwards
                 Camera.main.ScreenToWorldPoint(Input.mousePosition).y >
                 shootScript.transform.position.y
-                )
             )
             {
                 shootScript.canShoot = false;
