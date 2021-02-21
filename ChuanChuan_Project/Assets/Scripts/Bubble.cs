@@ -5,21 +5,28 @@ using UnityEngine;
 public class Bubble : MonoBehaviour
 {
     public float raycastRange = 0.7f;
+
     public float raycastOffset = 0.51f;
+
     public bool isFixed;
+
     public bool isConnected;
+
     public BubbleColor bubbleColor;
+
     void Update()
     {
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
-        if (collision.gameObject.tag == "Fork") {
+        if (collision.gameObject.tag == "Fork")
+        {
+            Rigidbody2D rd = this.GetComponent<Rigidbody2D>();
+            CircleCollider2D cc = this.GetComponent<CircleCollider2D>();
+            Destroy (rd);
+            Destroy (cc);
             GameManager.instance.shootScript.UpdateCollection(this);
-            GameManager.instance.ProcessTurn(transform);
-
         }
     }
 
@@ -28,22 +35,48 @@ public class Bubble : MonoBehaviour
         // LevelManager.instance.SetAsBubbleAreaChild(transform);
     }
 
-
     // destory overlay gameobjects
-
-    
-    
     public List<Transform> GetNeighbors()
     {
         List<RaycastHit2D> hits = new List<RaycastHit2D>();
         List<Transform> neighbors = new List<Transform>();
 
-        hits.Add(Physics2D.Raycast(new Vector2(transform.position.x - raycastOffset, transform.position.y), Vector3.left, raycastRange));
-        hits.Add(Physics2D.Raycast(new Vector2(transform.position.x + raycastOffset, transform.position.y), Vector3.right, raycastRange));
-        hits.Add(Physics2D.Raycast(new Vector2(transform.position.x - raycastOffset, transform.position.y + raycastOffset), new Vector2(-1f, 1f), raycastRange));
-        hits.Add(Physics2D.Raycast(new Vector2(transform.position.x - raycastOffset, transform.position.y - raycastOffset), new Vector2(-1f, -1f), raycastRange));
-        hits.Add(Physics2D.Raycast(new Vector2(transform.position.x + raycastOffset, transform.position.y + raycastOffset), new Vector2(1f, 1f), raycastRange));
-        hits.Add(Physics2D.Raycast(new Vector2(transform.position.x + raycastOffset, transform.position.y - raycastOffset), new Vector2(1f, -1f), raycastRange));
+        hits
+            .Add(Physics2D
+                .Raycast(new Vector2(transform.position.x - raycastOffset,
+                    transform.position.y),
+                Vector3.left,
+                raycastRange));
+        hits
+            .Add(Physics2D
+                .Raycast(new Vector2(transform.position.x + raycastOffset,
+                    transform.position.y),
+                Vector3.right,
+                raycastRange));
+        hits
+            .Add(Physics2D
+                .Raycast(new Vector2(transform.position.x - raycastOffset,
+                    transform.position.y + raycastOffset),
+                new Vector2(-1f, 1f),
+                raycastRange));
+        hits
+            .Add(Physics2D
+                .Raycast(new Vector2(transform.position.x - raycastOffset,
+                    transform.position.y - raycastOffset),
+                new Vector2(-1f, -1f),
+                raycastRange));
+        hits
+            .Add(Physics2D
+                .Raycast(new Vector2(transform.position.x + raycastOffset,
+                    transform.position.y + raycastOffset),
+                new Vector2(1f, 1f),
+                raycastRange));
+        hits
+            .Add(Physics2D
+                .Raycast(new Vector2(transform.position.x + raycastOffset,
+                    transform.position.y - raycastOffset),
+                new Vector2(1f, -1f),
+                raycastRange));
 
         foreach (RaycastHit2D hit in hits)
         {
@@ -58,12 +91,12 @@ public class Bubble : MonoBehaviour
 
     void OnBecameInvisible()
     {
-        Destroy(gameObject);
+        Destroy (gameObject);
     }
 
     public void Crash()
     {
-        Destroy(gameObject);
+        Destroy (gameObject);
     }
 
     private void OnDrawGizmosSelected()
@@ -73,6 +106,9 @@ public class Bubble : MonoBehaviour
 
     public enum BubbleColor
     {
-        BLUE, YELLOW, RED, GREEN
+        BLUE,
+        YELLOW,
+        RED,
+        GREEN
     }
 }
