@@ -24,7 +24,13 @@ public class Shooter : MonoBehaviour
     public bool isSwaping = false;
     public float time = 0.02f;
 
+    
+    Vector3 startPos;
+    void Start()
+    {
+        startPos = this.transform.position;
 
+    }
     public void Initiate() {
         canShoot = true;
         collectionNextPosition = new Vector2(collectionPosition.position.x, collectionPosition.position.y);
@@ -35,6 +41,16 @@ public class Shooter : MonoBehaviour
         if (!isShooting) {
             updateShooterBearing();
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        Debug.Log(col.gameObject.name + " : " + gameObject.name + " : " + Time.time);
+        this.transform.position = startPos;
+        isShooting = false;
+        canShoot = true;
+        gunSprite.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+
     }
 
     private void updateShooterBearing() {
@@ -89,7 +105,8 @@ public class Shooter : MonoBehaviour
 
     private GameObject InstantiateNewBubble(List<GameObject> bubblesInScene)
     {
-        GameObject newBubble = Instantiate(bubblesInScene[(int)(Random.Range(0, bubblesInScene.Count * 1000000f) / 1000000f)]);
+        return null;
+        GameObject newBubble = Instantiate(bubblesInScene[Random.Range(0, bubblesInScene.Count)]);
         newBubble.transform.position = new Vector2(nextBubblePosition.position.x, nextBubblePosition.position.y);
         newBubble.GetComponent<Bubble>().isFixed = false;
         Rigidbody2D rb2d = newBubble.AddComponent(typeof(Rigidbody2D)) as Rigidbody2D;
@@ -103,6 +120,8 @@ public class Shooter : MonoBehaviour
         newBubble.transform.position = collectionNextPosition;
         collectionNextPosition += collectionOffset;
         newBubble.GetComponent<Rigidbody2D>().velocity = staticVector;
+
+//mesh three
 
         //TODO: animation maybe
 

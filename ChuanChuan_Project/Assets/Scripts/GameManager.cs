@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+     
         if (shootScript.canShoot
             && Input.GetMouseButtonUp(0)
             && (Camera.main.ScreenToWorldPoint(Input.mousePosition).y > shootScript.transform.position.y))

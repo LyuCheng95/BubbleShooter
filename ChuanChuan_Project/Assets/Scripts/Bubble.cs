@@ -28,6 +28,11 @@ public class Bubble : MonoBehaviour
         // LevelManager.instance.SetAsBubbleAreaChild(transform);
     }
 
+
+    // destory overlay gameobjects
+
+    
+    
     public List<Transform> GetNeighbors()
     {
         List<RaycastHit2D> hits = new List<RaycastHit2D>();
