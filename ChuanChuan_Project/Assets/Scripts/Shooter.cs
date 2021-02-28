@@ -29,15 +29,16 @@ public class Shooter : MonoBehaviour
 
     public int maxCollection;
 
-    Vector3 startPos;
+    Vector3 forkStartPos;
 
     void Start()
     {
-        startPos = this.transform.position;
+        forkStartPos = this.transform.position;
     }
 
     public void Initiate()
     {
+        collection.Clear();
         canShoot = true;
         collectionNextPosition =
             new Vector2(collectionPosition.position.x,
@@ -61,7 +62,7 @@ public class Shooter : MonoBehaviour
     // must be rb & collision + same to the collided sprite
     private void OnCollisionEnter2D(Collision2D col)
     {
-        this.transform.position = startPos;
+        this.transform.position = forkStartPos;
         isShooting = false;
         canShoot = true;
         gunSprite.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
@@ -93,42 +94,57 @@ public class Shooter : MonoBehaviour
 
     public void UpdateCollection(Bubble newBubble)
     {
-        newBubble.tag = "Collection";
-        collection.Add (newBubble);
-        if (collection.Count > maxCollection)
+        if (newBubble.tag == "Bomb")
         {
-            LevelManager.instance.GameOver();
-        }
-
-        //location of collected bubbles
-        newBubble.transform.position = collectionNextPosition;
-        collectionNextPosition += collectionOffset;
-
-        //mesh three
-        //TODO: animation maybe
-        if (collection.Count >= 3)
-        {
-            Bubble lastItem = collection[collection.Count - 1];
-            Bubble lastItem2 = collection[collection.Count - 2];
-            Bubble lastItem3 = collection[collection.Count - 3];
-            if (
-                lastItem.bubbleColor.Equals(lastItem2.bubbleColor) &&
-                lastItem.bubbleColor.Equals(lastItem3.bubbleColor)
-            )
+            newBubble.Crash();
+            collection.Clear();
+            collectionNextPosition = collectionPosition.position;
+            var allCollections =
+                GameObject.FindGameObjectsWithTag("Collection");
+            for (int i = 0; i < allCollections.Length; i++)
             {
-                collection.Remove (lastItem);
-                collection.Remove (lastItem2);
-                collection.Remove (lastItem3);
+                Destroy(allCollections[i]);
+            }
+        }
+        else
+        {
+            newBubble.tag = "Collection";
+            collection.Add (newBubble);
 
-                //reposition of collected bubbles after mesh three
-                collectionNextPosition -= collectionOffset * 3;
+            //location of collected bubbles
+            newBubble.transform.position = collectionNextPosition;
+            collectionNextPosition += collectionOffset;
 
-                //destrory lastitem is not working jwj??
-                lastItem.Crash();
-                lastItem2.Crash();
-                lastItem3.Crash();
+            //mesh three
+            //TODO: animation maybe
+            if (collection.Count >= 3)
+            {
+                Bubble lastItem = collection[collection.Count - 1];
+                Bubble lastItem2 = collection[collection.Count - 2];
+                Bubble lastItem3 = collection[collection.Count - 3];
+                if (
+                    lastItem.bubbleColor.Equals(lastItem2.bubbleColor) &&
+                    lastItem.bubbleColor.Equals(lastItem3.bubbleColor)
+                )
+                {
+                    collection.Remove (lastItem);
+                    collection.Remove (lastItem2);
+                    collection.Remove (lastItem3);
 
-                LevelManager.instance.AddScore(1);
+                    //reposition of collected bubbles after mesh three
+                    collectionNextPosition -= collectionOffset * 3;
+
+                    //destrory lastitem is not working jwj??
+                    lastItem.Crash();
+                    lastItem2.Crash();
+                    lastItem3.Crash();
+
+                    LevelManager.instance.AddScore(1);
+                }
+            }
+            if (collection.Count > maxCollection)
+            {
+                LevelManager.instance.GameOver();
             }
         }
     }

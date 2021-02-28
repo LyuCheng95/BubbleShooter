@@ -1342,18 +1342,22 @@ MonoBehaviour:
   - {fileID: 4133961546522743746, guid: 0811a919b503041b5a54dc8a5f9fd406, type: 3}
   - {fileID: 4133961546522743746, guid: 3d4b8253a94ae4adfa952fa544a4ee71, type: 3}
   - {fileID: 4133961546522743746, guid: 16579fbcfaad743fa9349f9fdf9f2c5d, type: 3}
-  waitTime: 5
-  batchBubbles: 1
+  bombPrefab: {fileID: 4133961546522743746, guid: 4610be25d425b4a579c31ce1386a6c2d,
+    type: 3}
+  waitTime: 0
+  batchBubbles: 3
   scoreText: {fileID: 1101736917}
   gameOverScoreText: {fileID: 1115377550}
   gameOverBoard: {fileID: 707530028}
   gameStartBoard: {fileID: 961534027}
-  fallSpeed: {x: 0, y: -7}
+  fallSpeed: {x: 0, y: -5}
+  fallSpeedAccelerator: {x: 0, y: -0.1}
   score: 0
   isGameOver: 1
   shootScript: {fileID: 1893481959}
   startButton: {fileID: 890859216}
   playAgainButton: {fileID: 1934615951}
+  bombRandomThreshold: 100
 --- !u!224 &1137127813
 RectTransform:
   m_ObjectHideFlags: 0

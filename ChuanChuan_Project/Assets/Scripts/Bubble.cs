@@ -19,7 +19,7 @@ public class Bubble : MonoBehaviour
     void Update()
     {
         if (
-            gameObject.tag == "Bubble" &&
+            (gameObject.tag == "Bubble" || gameObject.tag == "Bomb") &&
             gameObject.transform.position.y < lowerLimit
         )
         {

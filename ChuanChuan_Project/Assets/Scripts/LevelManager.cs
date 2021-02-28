@@ -17,6 +17,8 @@ public class LevelManager : MonoBehaviour
 
     public List<GameObject> bubblesPrefabs;
 
+    public GameObject bombPrefab;
+
     public float waitTime;
 
     public int batchBubbles;
@@ -31,6 +33,8 @@ public class LevelManager : MonoBehaviour
 
     public Vector2 fallSpeed;
 
+    public Vector2 fallSpeedAccelerator;
+
     public int score;
 
     public bool isGameOver;
@@ -42,6 +46,8 @@ public class LevelManager : MonoBehaviour
     public Button playAgainButton;
 
     private IEnumerator coroutine;
+
+    public float bombRandomThreshold;
 
     private void Start()
     {
@@ -87,6 +93,7 @@ public class LevelManager : MonoBehaviour
             GenerateRandomBubblesForOneBatch (batchBubbles, bubblesPrefabs);
             waitTime = 10f / -fallSpeed.y;
             yield return new WaitForSeconds(waitTime);
+            fallSpeed += fallSpeedAccelerator;
         }
     }
 
@@ -113,6 +120,20 @@ public class LevelManager : MonoBehaviour
                 bubble.GetComponent(typeof (Rigidbody2D)) as Rigidbody2D;
             rb.velocity = fallSpeed;
         }
+        float bombRandomIndicator = Random.Range(0f, 100f);
+        if (bombRandomIndicator < bombRandomThreshold)
+        {
+            float x = Random.Range(-23f, 23f);
+            float y = Random.Range(33f, 43f);
+            Vector2 randomPosition = new Vector2(x, y);
+            var bomb = Instantiate(bombPrefab);
+            bomb.transform.position = randomPosition;
+
+            //add velocity
+            Rigidbody2D rb =
+                bomb.GetComponent(typeof (Rigidbody2D)) as Rigidbody2D;
+            rb.velocity = fallSpeed;
+        }
     }
 
     public void AddScore(int x)
@@ -137,6 +158,12 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < allCollections.Length; i++)
         {
             Destroy(allCollections[i]);
+        }
+
+        var allBombs = GameObject.FindGameObjectsWithTag("Bomb");
+        for (int i = 0; i < allBombs.Length; i++)
+        {
+            Destroy(allBombs[i]);
         }
         StopCoroutine (coroutine);
     }
