@@ -27,24 +27,65 @@ public class LevelManager : MonoBehaviour
 
     public Canvas gameOverBoard;
 
+    public Canvas gameStartBoard;
+
     public Vector2 fallSpeed;
 
     public int score;
 
     public bool isGameOver;
 
+    public Shooter shootScript;
+
+    public Button startButton;
+
+    public Button playAgainButton;
+
+    private IEnumerator coroutine;
+
     private void Start()
     {
-        scoreText.text = score.ToString();
+        gameStartBoard.enabled = true;
         gameOverBoard.enabled = false;
+        startButton.onClick.AddListener(this.handleStartButtonClick);
+        playAgainButton.onClick.AddListener(this.handlePlayAgainButtonClick);
+    }
+
+    IEnumerator StartGame()
+    {
+        gameOverBoard.enabled = false;
+        yield return new WaitForSeconds(1);
+        coroutine = GenerateBatchBubble();
+        StartCoroutine (coroutine);
+        shootScript.Initiate();
+        scoreText.text = score.ToString();
         isGameOver = false;
     }
 
-    public IEnumerator GenerateLevel()
+    void Update()
+    {
+        if (!isGameOver)
+        {
+            if (
+                shootScript.canShoot &&
+                Input.GetMouseButtonUp(0) &&
+                //only can shoot upwards
+                Camera.main.ScreenToWorldPoint(Input.mousePosition).y >
+                shootScript.transform.position.y
+            )
+            {
+                shootScript.canShoot = false;
+                shootScript.Shoot();
+            }
+        }
+    }
+
+    public IEnumerator GenerateBatchBubble()
     {
         while (true)
         {
             GenerateRandomBubblesForOneBatch (batchBubbles, bubblesPrefabs);
+            waitTime = 10f / -fallSpeed.y;
             yield return new WaitForSeconds(waitTime);
         }
     }
@@ -57,7 +98,7 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             float x = Random.Range(-23f, 23f);
-            float y = Random.Range(30f, 40.0f);
+            float y = Random.Range(33f, 43f);
             Vector2 randomPosition = new Vector2(x, y);
 
             //instantiate ONE bubble randomly from list
@@ -85,5 +126,30 @@ public class LevelManager : MonoBehaviour
         isGameOver = true;
         gameOverBoard.enabled = true;
         gameOverScoreText.text = score.ToString();
+
+        var allBubbles = GameObject.FindGameObjectsWithTag("Bubble");
+        for (int i = 0; i < allBubbles.Length; i++)
+        {
+            Destroy(allBubbles[i]);
+        }
+
+        var allCollections = GameObject.FindGameObjectsWithTag("Collection");
+        for (int i = 0; i < allCollections.Length; i++)
+        {
+            Destroy(allCollections[i]);
+        }
+        StopCoroutine (coroutine);
+    }
+
+    public void handleStartButtonClick()
+    {
+        gameStartBoard.enabled = false;
+        StartCoroutine(StartGame());
+    }
+
+    public void handlePlayAgainButtonClick()
+    {
+        gameOverBoard.enabled = false;
+        gameStartBoard.enabled = true;
     }
 }

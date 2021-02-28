@@ -27,8 +27,6 @@ public class Shooter : MonoBehaviour
 
     private float lookAngle;
 
-    public float time = 0.02f;
-
     public int maxCollection;
 
     Vector3 startPos;
@@ -48,7 +46,12 @@ public class Shooter : MonoBehaviour
 
     public void Update()
     {
-        if (!isShooting)
+        if (LevelManager.instance.isGameOver)
+        {
+            Rigidbody2D rb2d = gunSprite.GetComponent<Rigidbody2D>();
+            rb2d.angularVelocity = 0;
+        }
+        else if (!isShooting)
         {
             updateShooterBearing();
         }
@@ -58,12 +61,6 @@ public class Shooter : MonoBehaviour
     // must be rb & collision + same to the collided sprite
     private void OnCollisionEnter2D(Collision2D col)
     {
-        Debug
-            .Log(col.gameObject.name +
-            " : " +
-            gameObject.name +
-            " : " +
-            Time.time);
         this.transform.position = startPos;
         isShooting = false;
         canShoot = true;
@@ -96,6 +93,7 @@ public class Shooter : MonoBehaviour
 
     public void UpdateCollection(Bubble newBubble)
     {
+        newBubble.tag = "Collection";
         collection.Add (newBubble);
         if (collection.Count > maxCollection)
         {

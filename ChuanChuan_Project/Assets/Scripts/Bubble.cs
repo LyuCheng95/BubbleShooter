@@ -8,11 +8,24 @@ public class Bubble : MonoBehaviour
 
     public float raycastOffset = 0.51f;
 
+    public float lowerLimit = -5f;
+
     public bool isFixed;
 
     public bool isConnected;
 
     public BubbleColor bubbleColor;
+
+    void Update()
+    {
+        if (
+            gameObject.tag == "Bubble" &&
+            gameObject.transform.position.y < lowerLimit
+        )
+        {
+            LevelManager.instance.GameOver();
+        }
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -22,7 +35,7 @@ public class Bubble : MonoBehaviour
             CircleCollider2D cc = this.GetComponent<CircleCollider2D>();
             Destroy (rd);
             Destroy (cc);
-            GameManager.instance.shootScript.UpdateCollection(this);
+            LevelManager.instance.shootScript.UpdateCollection(this);
         }
     }
 

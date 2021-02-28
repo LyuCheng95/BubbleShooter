@@ -9,6 +9,8 @@ TagManager:
   - Limit
   - InitialLevelScene
   - Fork
+  - LowerEnd
+  - Collection
   layers:
   - Default
   - TransparentFX

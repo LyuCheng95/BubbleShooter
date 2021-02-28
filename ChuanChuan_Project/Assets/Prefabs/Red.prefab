@@ -114,6 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raycastRange: 0.7
   raycastOffset: 0.51
+  lowerLimit: -9
   isFixed: 1
   isConnected: 1
   bubbleColor: 2
