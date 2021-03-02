@@ -164,6 +164,7 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < allBombs.Length; i++)
         {
             Destroy(allBombs[i]);
+         
         }
         StopCoroutine (coroutine);
     }

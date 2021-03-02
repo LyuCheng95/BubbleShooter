@@ -29,6 +29,8 @@ public class Shooter : MonoBehaviour
 
     public int maxCollection;
 
+        
+
     Vector3 forkStartPos;
 
     void Start()
@@ -97,6 +99,7 @@ public class Shooter : MonoBehaviour
         if (newBubble.tag == "Bomb")
         {
             newBubble.Crash();
+            LevelManager.instance.AddScore(collection.Count);
             collection.Clear();
             collectionNextPosition = collectionPosition.position;
             var allCollections =
@@ -139,7 +142,7 @@ public class Shooter : MonoBehaviour
                     lastItem2.Crash();
                     lastItem3.Crash();
 
-                    LevelManager.instance.AddScore(1);
+                    LevelManager.instance.AddScore(3);
                 }
             }
             if (collection.Count > maxCollection)
