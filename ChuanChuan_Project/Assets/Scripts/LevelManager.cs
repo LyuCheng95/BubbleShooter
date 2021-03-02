@@ -49,6 +49,18 @@ public class LevelManager : MonoBehaviour
 
     public float bombRandomThreshold;
 
+    public float xUpper;
+
+    public float yUpper; 
+
+    public float xLower; 
+
+    public float yLower;
+
+
+
+
+
     private void Start()
     {
         gameStartBoard.enabled = true;
@@ -104,8 +116,8 @@ public class LevelManager : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            float x = Random.Range(-23f, 23f);
-            float y = Random.Range(33f, 43f);
+            float x = Random.Range(xLower, xUpper);
+            float y = Random.Range(yLower, yUpper);
             Vector2 randomPosition = new Vector2(x, y);
 
             //instantiate ONE bubble randomly from list
@@ -123,8 +135,8 @@ public class LevelManager : MonoBehaviour
         float bombRandomIndicator = Random.Range(0f, 100f);
         if (bombRandomIndicator < bombRandomThreshold)
         {
-            float x = Random.Range(-23f, 23f);
-            float y = Random.Range(33f, 43f);
+            float x = Random.Range(xLower, xUpper);
+            float y = Random.Range(yLower, yUpper);
             Vector2 randomPosition = new Vector2(x, y);
             var bomb = Instantiate(bombPrefab);
             bomb.transform.position = randomPosition;

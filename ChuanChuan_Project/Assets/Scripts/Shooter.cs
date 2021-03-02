@@ -29,7 +29,10 @@ public class Shooter : MonoBehaviour
 
     public int maxCollection;
 
-        
+    public AudioSource bombaudio;
+
+    public AudioSource matchaudio;
+
 
     Vector3 forkStartPos;
 
@@ -98,6 +101,7 @@ public class Shooter : MonoBehaviour
     {
         if (newBubble.tag == "Bomb")
         {
+            bombaudio.Play();
             newBubble.Crash();
             LevelManager.instance.AddScore(collection.Count);
             collection.Clear();
@@ -130,6 +134,7 @@ public class Shooter : MonoBehaviour
                     lastItem.bubbleColor.Equals(lastItem3.bubbleColor)
                 )
                 {
+                    matchaudio.Play();
                     collection.Remove (lastItem);
                     collection.Remove (lastItem2);
                     collection.Remove (lastItem3);

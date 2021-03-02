@@ -16,6 +16,10 @@ public class Bubble : MonoBehaviour
 
     public BubbleColor bubbleColor;
 
+ 
+
+   
+
     void Update()
     {
         if (
@@ -38,12 +42,13 @@ public class Bubble : MonoBehaviour
             LevelManager.instance.shootScript.UpdateCollection(this);
         }
     }
-
+    
     public void Crash()
     {
+   
         Destroy (gameObject);
     }
-
+    
     public enum BubbleColor
     {
         BLUE,
